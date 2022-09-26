@@ -1,0 +1,38 @@
+.fw-400 {
+    font-weight: 400;
+}
+
+.col-4 {
+    width: calc(100% / 4);
+}
+
+.list-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+
+    .span {
+        font-size: 20px;
+    }
+}
+
+.product-list {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto;
+    gap: 20px;
+}
+
+
+footer {
+    background-color: #000;
+    color: #F8F8F8;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    li {
+        list-style: none;
+    }
+}

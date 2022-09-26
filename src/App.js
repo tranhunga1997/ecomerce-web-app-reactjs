@@ -1,23 +1,29 @@
-import logo from './logo.svg';
+import { Route, Routes } from 'react-router-dom';
+import 'react-slideshow-image/dist/styles.css';
 import './App.css';
+import AddProduct from './page/AddProduct';
+import LandingPage from './page/LandingPage';
+import LoginPage from './page/LoginPage';
+import RegisterPage from './page/RegisterPage';
+import Main from './page/Main';
+import ProductPage from './page/ProductPage';
+import NotFound from './components/NotFound';
+import CartPage from './page/CartPage';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Routes>
+        <Route element={<Main />}>
+          <Route path='/' element={<LandingPage />} />
+          <Route path='products' element={<ProductPage />} />
+          <Route path='product/add' element={<AddProduct />} />
+          <Route path='product/cart' element={<CartPage />} />
+          <Route path='user/login' element={<LoginPage />} />
+          <Route path='user/register' element={<RegisterPage />} />
+          <Route path='*' element={<NotFound />} />
+        </Route>
+      </Routes>
     </div>
   );
 }

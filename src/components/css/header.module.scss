@@ -1,0 +1,29 @@
+.dropdownHeader {
+    position: relative;
+
+    &:hover .dropdownContent {
+        display: block;
+    }
+}
+
+.dropdownContent {
+    display: none;
+    position: absolute;
+    z-index: 10;
+    right: 0;
+    background-color: #fff;
+    box-shadow: -4px 10px 37px -10px rgba(0,0,0,0.61);
+    width: 200px;
+
+    li {
+        padding: 10px 6px;
+
+        &:hover {
+            background-color: #eeeaea;
+        }
+    }
+
+    a {
+        display: block;
+    }
+}

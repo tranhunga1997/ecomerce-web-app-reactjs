@@ -1,0 +1,29 @@
+.box-container {
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-top: 32px;
+    margin-bottom: 32px;
+    border: 1px solid rgba(0, 0, 0, 0.175);
+    border-radius: 8px;
+}
+
+.box-container-50 {
+    width: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.175);
+    border-radius: 8px;
+
+    margin-top: 32px;
+    margin-bottom: 32px;
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+
+.box-container-5 {
+    margin-top: 32px;
+    margin-bottom: 32px;
+    margin-left: 5%;
+    margin-right: 5%;
+    border-radius: 8px;
+
+    border: 1px solid rgba(0, 0, 0, 0.175);
+}
