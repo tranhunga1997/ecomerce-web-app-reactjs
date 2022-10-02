@@ -59,7 +59,7 @@ function Header() {
                             onClick={openModalHandle} />
                     </Grid>
                     <Grid item>
-                        {user ?
+                        {user.username !== "" ?
                             <ul>
                                 <li className={headerStyles.dropdownHeader}>
                                     <p
@@ -71,10 +71,16 @@ function Header() {
                                     >Chào, {user.username || "Guest"}</p>
                                     <ul className={headerStyles.dropdownContent}>
                                         <li>
-                                            <Link>Thông tin tài khoản</Link>
+                                            <Link to="/user/profile">Thông tin tài khoản</Link>
+                                        </li>
+                                        <li>
+                                            <Link to="/user/change-password">Thay đổi mật khẩu</Link>
                                         </li>
                                         <li>
                                             <Link to="/product/cart">Giỏ hàng</Link>
+                                        </li>
+                                        <li>
+                                            <Link to="/users">[ADMIN] Quản lý tài khoản</Link>
                                         </li>
                                         <li>
                                             <span style={{ cursor: "pointer" }} onClick={logoutHandle}>Đăng xuất</span>

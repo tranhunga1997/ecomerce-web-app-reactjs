@@ -1,4 +1,6 @@
 import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Modal, Select, TextField, Typography } from "@mui/material";
+import { useFormik } from "formik";
+import * as yup from "yup";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 
@@ -18,12 +20,54 @@ FilterModal.propTypes = {
     onCloseHandle: PropTypes.func,
 }
 
+const validationSchema = yup.object({
+    productName: yup
+        .string()
+        .matches(/^[^`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]*$/gi, "Không được nhập ký tự đặc biệt !"),
+
+    minPrice: yup
+        .number("chỉ nhập được số !")
+        .test("price constrains", "Chưa nhập giá tối thiểu", function (value) {
+            const { maxPrice } = this.parent;
+            if (value && maxPrice) {
+                return true;
+            } else if (!maxPrice) {
+                return true;
+            } else {
+                return false
+            }
+        })
+        .positive(),
+
+    maxPrice: yup
+        .number("chỉ nhập được số !")
+        .test("price constrains", "Chưa nhập giá tối đa", function (value) {
+            const { minPrice } = this.parent;
+            if (value && minPrice) {
+                return true;
+            } else if (!minPrice) {
+                return true;
+            } else {
+                return false;
+            }
+        })
+        .positive(),
+})
+
 function FilterModal({ isOpen, onCloseHandle }) {
     const navigate = useNavigate();
 
-    const onSubmitHandle = (e) => {
-        navigate('/products')
-    }
+    const formik = useFormik({
+        initialValues: {
+            productName: "",
+            minPrice: "",
+            maxPrice: "",
+        },
+        validationSchema: validationSchema,
+        onSubmit: values => {
+            navigate('/products')
+        }
+    })
 
     return (
         <Modal
@@ -36,7 +80,7 @@ function FilterModal({ isOpen, onCloseHandle }) {
                     <Grid item textAlign="center" marginBottom="22px">
                         <h2>TÌM KIẾM SẢN PHẨM</h2>
                     </Grid>
-                    <form onSubmit={onSubmitHandle}>
+                    <form onSubmit={formik.handleSubmit}>
                         <Grid container spacing="18px" direction="column">
                             <Grid item>
                                 <TextField
@@ -44,6 +88,10 @@ function FilterModal({ isOpen, onCloseHandle }) {
                                     label="Tên sản phẩm"
                                     variant="outlined"
                                     fullWidth
+                                    value={formik.values.productName}
+                                    error={formik.touched.productName && Boolean(formik.errors.productName)}
+                                    helperText={formik.touched.productName && formik.errors.productName}
+                                    onChange={formik.handleChange}
                                 />
                             </Grid>
 
@@ -52,16 +100,24 @@ function FilterModal({ isOpen, onCloseHandle }) {
                                     <TextField
                                         name="minPrice"
                                         type="number"
-                                        label="Giá từ"
+                                        label="Giá tối thiểu"
                                         variant="outlined"
+                                        value={formik.values.minPrice}
+                                        error={formik.touched.minPrice && Boolean(formik.errors.minPrice)}
+                                        helperText={formik.touched.minPrice && formik.errors.minPrice}
+                                        onChange={formik.handleChange}
                                     />
                                 </Grid>
                                 <Grid item>
                                     <TextField
-                                        name="minPrice"
+                                        name="maxPrice"
                                         type="number"
-                                        label="Giá đến"
+                                        label="Giá tối đa"
                                         variant="outlined"
+                                        value={formik.values.maxPrice}
+                                        error={formik.touched.maxPrice && Boolean(formik.errors.maxPrice)}
+                                        helperText={formik.touched.maxPrice && formik.errors.maxPrice}
+                                        onChange={formik.handleChange}
                                     />
                                 </Grid>
                             </Grid>
@@ -73,12 +129,13 @@ function FilterModal({ isOpen, onCloseHandle }) {
                                         labelId="category"
                                         id="category"
                                         // value={age}
+                                        defaultValue={""}
                                         label="Age"
-                                    // onChange={handleChange}
+                                        // onChange={handleChange}
                                     >
-                                        <MenuItem value={1}>Nước hoa</MenuItem>
-                                        <MenuItem value={2}>Son môi</MenuItem>
-                                        <MenuItem value={3}>Serum</MenuItem>
+                                        <MenuItem value={0}>Nước hoa</MenuItem>
+                                        <MenuItem value={1}>Son môi</MenuItem>
+                                        <MenuItem value={2}>Serum</MenuItem>
                                     </Select>
                                 </FormControl>
                             </Grid>
@@ -89,8 +146,9 @@ function FilterModal({ isOpen, onCloseHandle }) {
                                         labelId="category"
                                         id="category"
                                         // value={age}
+                                        defaultValue={""}
                                         label="Age"
-                                    // onChange={handleChange}
+                                        // onChange={handleChange}
                                     >
                                         <MenuItem value={1}>Brand 1</MenuItem>
                                         <MenuItem value={2}>Brand 2</MenuItem>
@@ -98,7 +156,7 @@ function FilterModal({ isOpen, onCloseHandle }) {
                                     </Select>
                                 </FormControl>
                             </Grid>
-                            <Grid item 
+                            <Grid item
                                 style={{
                                     display: "flex",
                                     justifyContent: "space-evenly"

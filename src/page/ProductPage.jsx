@@ -1,5 +1,6 @@
 import { Button, Container } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import productApi from "../api/productApi";
 import MyCard from "../components/MyCard";
 
 import "./css/productsStyles.scss";
@@ -7,10 +8,19 @@ import FilterModal from "./FilterModal";
 
 function ProductPage() {
     const [openModal, setOpenModal] = useState(false);
+    const [products, setProducts] = useState([])
 
     const openModalHandle = () => setOpenModal(true);
 
     const closeModalHandle = () => setOpenModal(false);
+
+    useEffect(() => {
+        productApi.getAll(5)
+            .then(products => setProducts(products))
+            .then(err => {
+                throw new Error(err.message);
+            })
+    }, [])
 
     return (
         <Container style={{
@@ -22,6 +32,16 @@ function ProductPage() {
                 <Button onClick={openModalHandle}>Filter</Button>
             </div>
             <div className="product-list">
+                {products.map(p => (
+                    <MyCard
+                        key={p.id}
+                        id={p.id}
+                        image={p.image}
+                        title={p.title}
+                        text="50 shades"
+                        price={p.price}
+                    />
+                ))}
                 <MyCard
                     image="https://th.bing.com/th/id/OIP.cbXICaNuXZbCW6b1YasWKAHaHa?pid=ImgDet&rs=1"
                     title="Duo-tone buildable Foundation"

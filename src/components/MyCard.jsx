@@ -1,7 +1,8 @@
-import { Button, Card, CardActions, CardContent, CardMedia, Typography } from "@mui/material";
-import "./css/my-card.scss";
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import { Button, Card, CardActions, CardContent, CardMedia, IconButton, Typography } from "@mui/material";
 import PropTypes from "prop-types";
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import { useNavigate } from 'react-router-dom';
+import "./css/my-card.scss";
 
 MyCard.propTypes = {
     image: PropTypes.string,
@@ -18,13 +19,19 @@ const titleDotStyle = {
 }
 
 function MyCard(props) {
-    const {image, title, text, price, onClick} = props;
+    const navigate = useNavigate();
+    const { id, image, title, text, price, onClick } = props;
+
+    const viewDetailHandle = (e, id, name) => {
+        e.preventDefault();
+        navigate(`/product/detail/${title}`, { state: { id } })
+    }
 
     return (
         <Card sx={{ maxWidth: 345 }} >
             <CardMedia
                 component="img"
-                height="300"
+                height="300px"
                 image={image}
                 alt={title}
             />
@@ -39,8 +46,9 @@ function MyCard(props) {
                     {`${price} VND`}
                 </Typography>
             </CardContent>
-            <CardActions style={{justifyContent: "center"}}>
-                <Button variant="outlined" color="secondary" fullWidth={true} startIcon={<AddCircleOutlineOutlinedIcon />}>Add to Cart</Button>
+            <CardActions style={{ justifyContent: "center" }}>
+                <Button variant="contained" color="warning" onClick={e => viewDetailHandle(e, id, title)}>Chi tiết</Button>
+                <IconButton variant="outlined" color="secondary"><AddShoppingCartIcon /></IconButton>
             </CardActions>
         </Card>
     )

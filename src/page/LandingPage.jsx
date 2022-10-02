@@ -1,7 +1,9 @@
 import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined';
 import { Button } from "@mui/material";
+import { lazy, Suspense, useEffect, useState } from 'react';
+import productApi from '../api/productApi';
+import Loading from '../components/Loading';
 import MyCard from "../components/MyCard";
-import SlideContainer from "../components/SlideContainer";
 import aboutImage1 from "../imgs/about-image-1.png";
 import aboutImage2 from "../imgs/about-image-2.png";
 import aboutImage3 from "../imgs/about-image-3.png";
@@ -10,7 +12,33 @@ import image1 from "../imgs/image-1.png";
 
 import "./css/landingStyles.scss";
 
+const SlideContainer = lazy(() => import("../components/SlideContainer"))
+
 function LandingPage() {
+    const [products, setProducts] = useState([])
+
+    const renderSlide = (products) => {
+        return products.map(p => (
+            <MyCard
+                key={p.id}
+                id={p.id}
+                image={p.image}
+                title={p.title}
+                text="50 shades"
+                price={p.price}
+            />
+        ))
+    }
+
+    useEffect(() => {
+        productApi.getAll(6)
+            .then(products => setProducts(products))
+            .catch(err => {
+                throw new Error(err.message);
+            })
+    }, [])
+    console.log(products)
+
     return (
         <>
             <div className="banner">
@@ -24,44 +52,11 @@ function LandingPage() {
             <section className="section-1 section-container">
                 <h2>Minisque’s Featured Products</h2>
                 <p>Check Out Our Best Sellers + Lates Drops</p>
-                <SlideContainer>
-                    <MyCard
-                        image="https://th.bing.com/th/id/OIP.cbXICaNuXZbCW6b1YasWKAHaHa?pid=ImgDet&rs=1"
-                        title="Duo-tone buildable Foundation"
-                        text="50 shades"
-                        price={3000000}
-                    />
-                    <MyCard
-                        image="https://th.bing.com/th/id/OIP.cbXICaNuXZbCW6b1YasWKAHaHa?pid=ImgDet&rs=1"
-                        title="Duo-tone buildable Foundation"
-                        text="50 shades"
-                        price={3000000}
-                    />
-                    <MyCard
-                        image="https://th.bing.com/th/id/OIP.cbXICaNuXZbCW6b1YasWKAHaHa?pid=ImgDet&rs=1"
-                        title="Duo-tone buildable Foundation"
-                        text="50 shades"
-                        price={3000000}
-                    />
-                    <MyCard
-                        image="https://th.bing.com/th/id/OIP.cbXICaNuXZbCW6b1YasWKAHaHa?pid=ImgDet&rs=1"
-                        title="Duo-tone buildable Foundation"
-                        text="50 shades"
-                        price={3000000}
-                    />
-                    <MyCard
-                        image="https://th.bing.com/th/id/OIP.cbXICaNuXZbCW6b1YasWKAHaHa?pid=ImgDet&rs=1"
-                        title="Duo-tone buildable Foundation"
-                        text="50 shades"
-                        price={3000000}
-                    />
-                    <MyCard
-                        image="https://th.bing.com/th/id/OIP.cbXICaNuXZbCW6b1YasWKAHaHa?pid=ImgDet&rs=1"
-                        title="Duo-tone buildable Foundation"
-                        text="50 shades"
-                        price={3000000}
-                    />
-                </SlideContainer>
+                <Suspense fallback={<Loading />}>
+                    <SlideContainer>
+                        {renderSlide(products)}
+                    </SlideContainer>
+                </Suspense>
                 <hr />
             </section>
             <div className="find-your-shade">
@@ -77,28 +72,22 @@ function LandingPage() {
                 <p>Powerful Sets To Save Your Time</p>
                 <SlideContainer>
                     <MyCard
-                        image="https://th.bing.com/th/id/OIP.vy99sVHLrQ3UMs6X7mOeHgHaE6?pid=ImgDet&rs=1"
-                        title="Generation Z"
-                        text="20 shades"
-                        price={9999}
+                        image="https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg"
+                        title="Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops"
+                        text="50 shades"
+                        price={109.95}
                     />
                     <MyCard
-                        image="https://th.bing.com/th/id/OIP.vy99sVHLrQ3UMs6X7mOeHgHaE6?pid=ImgDet&rs=1"
-                        title="Generation Z"
-                        text="20 shades"
-                        price={9999}
+                        image="https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg"
+                        title="Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops"
+                        text="50 shades"
+                        price={109.95}
                     />
                     <MyCard
-                        image="https://th.bing.com/th/id/OIP.vy99sVHLrQ3UMs6X7mOeHgHaE6?pid=ImgDet&rs=1"
-                        title="Generation Z"
-                        text="20 shades"
-                        price={9999}
-                    />
-                    <MyCard
-                        image="https://th.bing.com/th/id/OIP.vy99sVHLrQ3UMs6X7mOeHgHaE6?pid=ImgDet&rs=1"
-                        title="Generation Z"
-                        text="20 shades"
-                        price={9999}
+                        image="https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg"
+                        title="Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops"
+                        text="50 shades"
+                        price={109.95}
                     />
                 </SlideContainer>
             </section>
